@@ -1,76 +1,167 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Password Login</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      font-family: 'Share Tech Mono', monospace;
-      background-color: #000;
-      color: #00ff00;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .login-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 5px;
+            border: 1px solid #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+            text-shadow: 0 0 5px #0f0;
+        }
+        
+        .password-input {
+            background-color: #111;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-family: 'Share Tech Mono', monospace;
+            margin-bottom: 15px;
+            width: 200px;
+            outline: none;
+        }
+        
+        .submit-btn {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0c0;
+            box-shadow: 0 0 10px #0f0;
+        }
+        
+        .error-message {
+            color: #f00;
+            margin-top: 10px;
+            height: 20px;
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+    </style>
 </head>
 <body>
-  <div class="min-h-screen flex items-center justify-center bg-black px-4">
-    <form id="loginForm" class="w-full max-w-sm bg-black bg-opacity-80 border border-green-600 rounded-lg p-8 shadow-lg">
-      <h1 class="text-3xl font-bold mb-6 text-green-400 text-center tracking-widest">
-        ENTER PASSWORD
-      </h1>
-      <div class="mb-6">
-        <label for="password" class="block text-green-400 mb-2 text-lg">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          required
-          autocomplete="off"
-          class="w-full px-4 py-3 rounded-md bg-black border border-green-600 text-green-300 placeholder-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-          placeholder="Enter your password"
-        />
-      </div>
-      <button
-        type="submit"
-        class="w-full bg-green-600 hover:bg-green-700 transition-colors text-black font-semibold py-3 rounded-md flex items-center justify-center space-x-2"
-      >
-        <i class="fas fa-key"></i>
-        <span>Submit</span>
-      </button>
-      <p id="errorMsg" class="mt-4 text-red-600 text-center font-mono text-sm hidden">Incorrect password. Try again.</p>
-    </form>
-  </div>
+    <canvas id="matrix" class="matrix-bg"></canvas>
+    
+    <div class="login-container">
+        <h1>SECURE ACCESS PORTAL</h1>
+        <p>ENTER AUTHORIZATION CODE:</p>
+        <input type="password" id="password" class="password-input" placeholder="••••••">
+        <br>
+        <button id="submit" class="submit-btn">AUTHENTICATE</button>
+        <p id="error" class="error-message"></p>
+    </div>
 
-  <script>
-    const loginForm = document.getElementById('loginForm');
-    const passwordInput = document.getElementById('password');
-    const errorMsg = document.getElementById('errorMsg');
+    <script>
+        document.getElementById('submit').addEventListener('click', function() {
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('error');
+            
+            if (password === '123') {
+                // Open the hacker page in a new tab
+                window.open('hacker-page.html', '_blank');
+                // Clear the password field
+                document.getElementById('password').value = '';
+                errorElement.textContent = '';
+            } else {
+                errorElement.textContent = 'ACCESS DENIED: INVALID CREDENTIALS';
+            }
+        });
 
-    // Define the crazy password
-    const crazyPassword = "Cr@zY";
+        // Allow submitting with Enter key
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('submit').click();
+            }
+        });
 
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (passwordInput.value === crazyPassword) {
-        errorMsg.classList.add('hidden');
-        // Open hacker screen website in a new tab
-        window.open('https://crazyhub.42web.io/', '_blank');
-      } else {
-        errorMsg.classList.remove('hidden');
-        passwordInput.value = '';
-        passwordInput.focus();
-      }
-    });
-  </script>
+        // Matrix background effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        
+        const alphabet = katakana + latin + nums;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
+        
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
 </html>

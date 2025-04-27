@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Access Granted</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        .header {
+            padding: 20px;
+            border-bottom: 1px solid #0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        .logo {
+            font-size: 24px;
+            text-shadow: 0 0 5px #0f0;
+        }
+        
+        .status {
+            color: #0f0;
+            padding: 5px 10px;
+            border: 1px solid #0f0;
+            border-radius: 3px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+        
+        .sidebar {
+            width: 250px;
+            border-right: 1px solid #0f0;
+            padding: 20px;
+        }
+        
+        .nav-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+        
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: rgba(0, 20, 0, 0.3);
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+        }
+        
+        .card-title {
+            margin-top: 0;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 10px;
+        }
+        
+        .terminal {
+            background-color: #000;
+            border: 1px solid #0f0;
+            border-radius: 5px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin: 5px 0;
+        }
+        
+        .prompt {
+            color: #0f0;
+        }
+        
+        .footer {
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #0f0;
+            font-size: 12px;
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .blinking-cursor {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix" class="matrix-bg"></canvas>
+    
+    <div class="container">
+        <div class="header">
+            <div class="logo">SYSTEM CONTROL PANEL</div>
+            <div class="status">ACCESS LEVEL: ADMIN</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="nav-item">DASHBOARD</div>
+                <div class="nav-item">NETWORK SCAN</div>
+                <div class="nav-item">SYSTEM TOOLS</div>
+                <div class="nav-item">DATA ANALYSIS</div>
+                <div class="nav-item">SECURITY PROTOCOLS</div>
+                <div class="nav-item">USER MANAGEMENT</div>
+                <div class="nav-item">SETTINGS</div>
+            </div>
+            
+            <div class="content">
+                <h2>SYSTEM OVERVIEW</h2>
+                
+                <div class="dashboard">
+                    <div class="card">
+                        <h3 class="card-title">SYSTEM STATUS</h3>
+                        <p>CPU Usage: 23%</p>
+                        <p>Memory: 4.2/16GB</p>
+                        <p>Storage: 1.2TB/2TB</p>
+                        <p>Network: 45Mbps</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">SECURITY ALERTS</h3>
+                        <p>Firewall: Active</p>
+                        <p>Intrusion Detection: 0 threats</p>
+                        <p>Last Scan: 5 minutes ago</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">ACTIVE CONNECTIONS</h3>
+                        <p>192.168.1.5 - Secure</p>
+                        <p>192.168.1.12 - Secure</p>
+                        <p>10.0.0.34 - Secure</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">SYSTEM TERMINAL</h3>
+                        <div class="terminal" id="terminal">
+                            <div class="terminal-line"><span class="prompt">admin@system:~$</span> Welcome to secure terminal</div>
+                            <div class="terminal-line"><span class="prompt">admin@system:~$</span> System initialized</div>
+                            <div class="terminal-line"><span class="prompt">admin@system:~$</span> All services running</div>
+                            <div class="terminal-line"><span class="prompt">admin@system:~$</span> <span id="cursor" class="blinking-cursor">_</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            SYSTEM VERSION 4.2.1 | LAST UPDATED: 2023-11-15 | © CYBER SYSTEMS
+        </div>
+    </div>
+
+    <script>
+        // Matrix background effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        
+        const alphabet = katakana + latin + nums;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
+        
+        // Terminal animation
+        const terminal = document.getElementById('terminal');
+        const cursor = document.getElementById('cursor');
+        
+        const commands = [
+            'scan network --all',
+            'analyze security protocols',
+            'check system integrity',
+            'run diagnostics',
+            'initialize encryption sequence'
+        ];
+        
+        let commandIndex = 0;
+        
+        setInterval(() => {
+            if (commandIndex < commands.length) {
+                // Remove the cursor
+                cursor.style.display = 'none';
+                
+                // Add the new command
+                const newLine = document.createElement('div');
+                newLine.className = 'terminal-line';
+                newLine.innerHTML = `<span class="prompt">admin@system:~$</span> ${commands[commandIndex]}`;
+                terminal.appendChild(newLine);
+                
+                // Add the response
+                const responseLine = document.createElement('div');
+                responseLine.className = 'terminal-line';
+                responseLine.textContent = `> ${getRandomResponse()}`;
+                terminal.appendChild(responseLine);
+                
+                // Add new prompt with cursor
+                const promptLine = document.createElement('div');
+                promptLine.className = 'terminal-line';
+                promptLine.innerHTML = '<span class="prompt">admin@system:~$</span> <span id="cursor" class="blinking-cursor">_</span>';
+                terminal.appendChild(promptLine);
+                
+                // Update cursor reference
+                cursor.remove();
+                cursor = document.getElementById('cursor');
+                
+                // Scroll to bottom
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                commandIndex++;
+            }
+        }, 2000);
+        
+        function getRandomResponse() {
+            const responses = [
+                'Scan complete. 0 vulnerabilities found.',
+                'All protocols secure.',
+                'System integrity verified.',
+                'Diagnostics complete. No issues detected.',
+                'Encryption initialized. Secure channel established.',
+                'Process completed successfully.',
+                'Access granted to all subsystems.',
+                'Firewall active. No intrusions detected.'
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+        
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
